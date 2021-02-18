@@ -6,11 +6,14 @@ const Button = ({onClick, text}) => (
 )
 
 const Statistic = ({text , value}) => (
-    <p>{text}: {value}</p>
+  <tr>
+    <td>{text}</td>
+    <td>{value}</td>
+  </tr>
 )
 const Statistics = ({statistics}) => {
 
-  if (statistics.all == 0) {
+  if (statistics.all === 0) {
     return (
       <>
       <h2>Statistics</h2>
@@ -19,15 +22,21 @@ const Statistics = ({statistics}) => {
     )
   } else {
     return (
-        <>
-        <h2>Statistics</h2>
-        <Statistic text="Good" value={statistics.good} />
-        <Statistic text="Neutral" value={statistics.neutral} />
-        <Statistic text="Bad" value={statistics.bad} />
-        <Statistic text="All" value={statistics.all} />
-        <Statistic text="Average" value={statistics.ave } />
-        <Statistic text="Postive" value={statistics.postive + '%'} />
-        </>
+      <table>
+        <thead>
+            <tr>
+                <th>Statistics</th>
+            </tr>
+        </thead>
+        <tbody>
+          <Statistic text="Good" value={statistics.good} />
+          <Statistic text="Neutral" value={statistics.neutral} />
+          <Statistic text="Bad" value={statistics.bad} />
+          <Statistic text="All" value={statistics.all} />
+          <Statistic text="Average" value={statistics.ave } />
+          <Statistic text="Postive" value={statistics.postive + '%'} />
+        </tbody>
+      </table>
     )
   }
 }
