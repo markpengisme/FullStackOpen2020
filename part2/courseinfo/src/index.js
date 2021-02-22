@@ -28,14 +28,17 @@ const Content = ({parts}) => {
 }
 
 const Total = ({parts}) => {
+  const total = parts.reduce((p, s) => p + s.exercises, 0)
+  
   return (
     <>
-      <p>Total of {parts[0].exercises + parts[1].exercises + parts[2].exercises} exercises</p>
+      <p>Total of {total} exercises</p>
     </>
   )
 }
 
 const Course = ({course}) => {
+  
   return (
     <div>
       <Header header={course.name} />
