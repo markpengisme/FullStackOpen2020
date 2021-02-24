@@ -1,7 +1,7 @@
 import React from 'react'
+import Country from './Country'
 
-const Countries = ({ countriesToShow }) => {
-
+const Countries = ({ countriesToShow, showCountry, handleShowBtnClick }) => {
   if (countriesToShow.length > 10) {
     return (
       <p>Too many matches, please specify another filter.</p>
@@ -10,25 +10,21 @@ const Countries = ({ countriesToShow }) => {
     return (
       <ul>
         {countriesToShow.map(country =>
-            <li key={country.name}>{country.name}</li>
+            <li key={country.name}>{country.name}
+              <button name={country.name} onClick={handleShowBtnClick}>
+                {showCountry[country.name] ? "hide" : "show"}
+              </button>
+              <div id={country.name} style={{ display: 'none'}}>
+                <Country country={country} />
+              </div>
+            </li>
         )}
       </ul>
     )
   } else if (countriesToShow.length === 1){
     const country = countriesToShow[0]
     return(
-      <>
-        <h2>{country.name}</h2>
-        <p>Capital: {country.capital}</p>
-        <p>Population: {country.population}</p>
-        <h3>Languages</h3>
-        <ul>
-          {country.languages.map(language =>
-              <li key={language.name}>{language.name}</li>
-          )}
-        </ul>
-        <img src={country.flag} alt="" width="100" height="100"/>
-      </>
+      <Country country={country} />
     )
   } else {
     return null

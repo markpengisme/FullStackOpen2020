@@ -4,8 +4,9 @@ import Countries from './components/Countries'
 import Filter from './components/Filter'
 
 const App = () => {
-  const [ countries, setCountries] = useState([])
+  const [ countries, setCountries ] = useState([])
   const [ filter, setFilter ] = useState('')
+  const [ showCountry, setShowCountry ] = useState({})
 
 
   useEffect(() => {
@@ -13,6 +14,12 @@ const App = () => {
       .get('https://restcountries.eu/rest/v2/all')
       .then(res => {
         setCountries(res.data)
+        
+        let show = {}
+        res.data.forEach(country => {
+          show[country.name] = false
+        })
+        setShowCountry(show)
       })
   }, [])
 
@@ -24,12 +31,22 @@ const App = () => {
     setFilter(event.target.value)
   }
 
+  const handleShowBtnClick = (event) => {
+    const name = event.target.name
+    const copy = {...showCountry}
+    copy[name] = !copy[name]
+    document.getElementById(name).style.display = copy[name] ? "block" : "none"
+    setShowCountry(copy)
+  }
+
   return (
     <div>
       <h2>Country</h2>
       <Filter filter={filter} handleFilterChange={handleFilterChange}></Filter>
       <div>
-        <Countries countriesToShow={countriesToShow} />
+        <Countries countriesToShow={countriesToShow}
+                   showCountry={showCountry}
+                   handleShowBtnClick={handleShowBtnClick} />
       </div>
     </div>
   )
