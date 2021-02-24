@@ -1,7 +1,9 @@
 import React from 'react'
 import Country from './Country'
+import Weather from './Weather'
 
-const Countries = ({ countriesToShow, showCountry, handleShowBtnClick }) => {
+const Countries = ({ countriesToShow, showCountry,
+  handleShowBtnClick, weather, getWeather }) => {
   if (countriesToShow.length > 10) {
     return (
       <p>Too many matches, please specify another filter.</p>
@@ -24,7 +26,12 @@ const Countries = ({ countriesToShow, showCountry, handleShowBtnClick }) => {
   } else if (countriesToShow.length === 1){
     const country = countriesToShow[0]
     return(
+      <>
       <Country country={country} />
+      <Weather capital={country.capital}
+               weather={weather}
+               getWeather={getWeather}/>
+      </>
     )
   } else {
     return null

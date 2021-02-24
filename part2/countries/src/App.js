@@ -3,18 +3,21 @@ import axios from 'axios'
 import Countries from './components/Countries'
 import Filter from './components/Filter'
 
+const api_key = process.env.REACT_APP_WEATHER_API_KEY
+const baseURL = `http://api.weatherstack.com/current?access_key=${api_key}&query=`
+
 const App = () => {
   const [ countries, setCountries ] = useState([])
   const [ filter, setFilter ] = useState('')
   const [ showCountry, setShowCountry ] = useState({})
-
+  const [ weather, setWeather ] = useState({})
 
   useEffect(() => {
     axios
       .get('https://restcountries.eu/rest/v2/all')
       .then(res => {
         setCountries(res.data)
-        
+
         let show = {}
         res.data.forEach(country => {
           show[country.name] = false
@@ -39,6 +42,15 @@ const App = () => {
     setShowCountry(copy)
   }
 
+  const getWeather = (capital) => {
+    axios.get(baseURL + capital)
+    .then(res => {
+      const copy = {...weather}
+      copy[capital]=res.data
+      setWeather(copy)
+    })
+  }
+
   return (
     <div>
       <h2>Country</h2>
@@ -46,7 +58,9 @@ const App = () => {
       <div>
         <Countries countriesToShow={countriesToShow}
                    showCountry={showCountry}
-                   handleShowBtnClick={handleShowBtnClick} />
+                   handleShowBtnClick={handleShowBtnClick}
+                   weather={weather}
+                   getWeather={getWeather} />
       </div>
     </div>
   )
