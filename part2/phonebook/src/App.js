@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
@@ -12,11 +11,10 @@ const App = () => {
   const [ filter, setFilter ] = useState('')
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
-      })
+    personService.getAll()
+    .then(allPeople => {
+      setPersons(allPeople)
+    })
   }, [])
 
   const personsToShow = persons.filter(person => 
@@ -38,6 +36,20 @@ const App = () => {
       personService.create(personObject)
       .then(returnedPerson => {
         setPersons(persons.concat(returnedPerson))
+        setNewName('')
+        setNewNumber('')
+      }) 
+    }
+  }
+
+  const deletePerson = (event) => {
+    event.preventDefault()
+    const found = persons.find(person => person.id.toString() === event.target.dataset.id)
+    const ans = window.confirm(`Delete ${found.name}`)
+    if (ans === true){
+      personService.del(found.id)
+      .then(() => {
+        setPersons(persons.filter(person => person.id !== found.id))
         setNewName('')
         setNewNumber('')
       }) 
@@ -68,7 +80,8 @@ const App = () => {
                   handleNumberChange={handleNumberChange}
       />
       <h2>Numbers</h2>
-      <Persons personsToShow={personsToShow} />
+      <Persons personsToShow={personsToShow}
+               deletePerson={deletePerson} />
     </div>
   )
 }
