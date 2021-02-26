@@ -29,9 +29,10 @@ const App = () => {
       name: newName,
       number: newNumber,
     }
-    
+
     const found = persons.find(person => person.name === newName)
     if (found !== undefined) {
+      // update
       const ans = window.confirm(`${found.name} is aready added to phonebook, replace the order number with a new one?`)
       if (ans === true) {
         const attrObj = {number: personObject.number}
@@ -39,12 +40,17 @@ const App = () => {
         .then(returnedPerson => {
           showMessage(`Change ${returnedPerson.name}'s number`, 'green')
           setPersons(persons.map(person =>
-          person.name !== returnedPerson.name 
+          person.id !== returnedPerson.id 
           ? person 
           : returnedPerson))
         })
+        .catch(error => {
+          showMessage(`'${found.name}' was already removed from server`, 'red')
+          setPersons(persons.filter(p => p.id !== found.id))
+        })
       }
     } else {
+      // add
       personService.create(personObject)
       .then(returnedPerson => {
         showMessage(`Added ${returnedPerson.name}`, 'green')
@@ -60,13 +66,17 @@ const App = () => {
     const found = persons.find(person => person.id.toString() === event.target.dataset.id)
     const ans = window.confirm(`Delete ${found.name}`)
     if (ans === true){
+      // delete
       personService.del(found.id)
       .then(() => {
         setPersons(persons.filter(person => person.id !== found.id))
         showMessage(`Deleted ${found.name}`, 'red')
         setNewName('')
         setNewNumber('')
-      }) 
+      }).catch(error => {
+        showMessage(`'${found.name}' was already removed from server`, 'red')
+        setPersons(persons.filter(p => p.id !== found.id))
+      })
     }
   }
 
