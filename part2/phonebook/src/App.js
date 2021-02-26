@@ -26,19 +26,27 @@ const App = () => {
     const personObject = {
       name: newName,
       number: newNumber,
-      id: persons.length + 1,
     }
     
     const found = persons.find(person => person.name === newName)
     if (found !== undefined) {
-      alert(`${newName} is already added to phonebook`)
+      const ans = window.confirm(`${found.name} is aready added to phonebook, replace the order number with a new one?`)
+      if (ans === true) {
+        const attrObj = {number: personObject.number}
+        personService.update(found.id, attrObj)
+        .then(returnedPerson => setPersons(persons.map(person =>
+          person.name !== returnedPerson.name 
+          ? person 
+          : returnedPerson))
+        )
+      }
     } else {
       personService.create(personObject)
       .then(returnedPerson => {
         setPersons(persons.concat(returnedPerson))
         setNewName('')
         setNewNumber('')
-      }) 
+      })
     }
   }
 

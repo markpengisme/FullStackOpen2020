@@ -16,4 +16,10 @@ const del = id => {
   return request.then(response => response.data)
 }
 
-export default { getAll, create, del }
+const update = (id, attrObj) => {
+  const request = axios.patch(`${baseUrl}/${id}`, attrObj)
+  return request.then(response => response.data)
+}
+
+const personService = { getAll, create, del, update }
+export default personService
