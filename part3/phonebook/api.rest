@@ -18,3 +18,21 @@ Content-Type: application/json
     "name": "Mark",
     "number": "0000-000-000"
 }
+
+### POST one person(error)
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name": "",
+    "number": "0000-000-000"
+}
+
+### POST one person(error)
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name": "Mark",
+    "number": ""
+}
