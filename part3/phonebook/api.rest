@@ -6,3 +6,6 @@ GET http://localhost:3001/api/persons/1
 
 ### GET one person(not exist)
 GET http://localhost:3001/api/persons/0
+
+### DELETE one person
+DELETE http://localhost:3001/api/persons/1
