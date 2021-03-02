@@ -1,2 +1,8 @@
 ### GET all persons
 GET http://localhost:3001/api/persons
+
+### GET one person(exists)
+GET http://localhost:3001/api/persons/1
+
+### GET one person(not exist)
+GET http://localhost:3001/api/persons/0
