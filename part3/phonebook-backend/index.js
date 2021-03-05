@@ -1,10 +1,10 @@
-
+require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
+const Person = require('./models/person')
 
 const app = express()
-
 morgan.token('body', (req, res) => {
   return JSON.stringify(req.body)
 })
@@ -24,38 +24,18 @@ app.use(morgan(function (tokens, req, res) {
   ].join(' ')
 }))
 
-let persons = [
-    { 
-      "name": "Arto Hellas", 
-      "number": "040-123456",
-      "id": 1
-    },
-    { 
-      "name": "Ada Lovelace", 
-      "number": "39-44-5323523",
-      "id": 2
-    },
-    { 
-      "name": "Dan Abramov", 
-      "number": "12-43-234345",
-      "id": 3
-    },
-    { 
-      "name": "Mary Poppendieck", 
-      "number": "39-23-6423122",
-      "id": 4
-    }
-]
-
-
 app.get('/info', (req, res) => {
-  let text = `<p>Phonebook has info for ${persons.length} people</p>`
-  text += `<p>${Date().toString()}</p>`
-  res.send(text)
+  Person.find({}).then(persons => {
+    let text = `<p>Phonebook has info for ${persons.length} people</p>`
+    text += `<p>${Date().toString()}</p>`
+    res.send(text)
+  })
 })
 
 app.get('/api/persons', (req, res) => {
-  res.json(persons)
+  Person.find({}).then(persons => {
+    res.json(persons)
+  })
 })
 
 app.get('/api/persons/:id', (req, res) => {
