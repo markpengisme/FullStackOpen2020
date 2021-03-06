@@ -2,7 +2,7 @@
 GET http://localhost:3001/api/persons
 
 ### GET one person(exists)
-GET http://localhost:3001/api/persons/1
+GET http://localhost:3001/api/persons/603fcf271dbc848c96ef9797
 
 ### GET one person(not exist)
 GET http://localhost:3001/api/persons/0
@@ -19,7 +19,16 @@ Content-Type: application/json
     "number": "0000-000-000"
 }
 
-### POST one person(error)
+### POST one person(Duplicate name)
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name": "Mark Peng",
+    "number": "12345"
+}
+
+### POST one person(no name error)
 POST http://localhost:3001/api/persons
 Content-Type: application/json
 
@@ -28,7 +37,7 @@ Content-Type: application/json
     "number": "0000-000-000"
 }
 
-### POST one person(error)
+### POST one person(no number error)
 POST http://localhost:3001/api/persons
 Content-Type: application/json
 
@@ -36,3 +45,4 @@ Content-Type: application/json
     "name": "Mark",
     "number": ""
 }
+

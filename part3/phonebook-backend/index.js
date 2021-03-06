@@ -61,20 +61,23 @@ app.post('/api/persons', (req, res) => {
     return res.status(400).json({ 
       error: 'Name and number must be filled in.' 
     })
-  } else if(persons.find(person => person.name === body.name)) {
-    return res.status(400).json({ 
-      error: 'Name must be unique.' 
-    })
   }
-
-  const person = {
-    name: body.name,
-    number: body.number,
-    id: Math.floor(Math.random() * 10000 + 1)
-  }
-  persons = persons.concat(person)
-
-  res.json(person)
+  
+  Person.findOne({"name":body.name}).then(person => {
+    if (person) {
+        return res.status(400).json({ 
+          error: 'Name must be unique.' 
+      })
+    } else {
+      const newPerson = new Person({
+        name: body.name,
+        number: body.number,
+      })
+      newPerson.save().then(savePerson => {
+        res.json(savePerson)
+      })
+    } 
+  })
 })
 
 
