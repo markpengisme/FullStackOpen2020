@@ -46,3 +46,19 @@ Content-Type: application/json
     "number": ""
 }
 
+### Patch one person number
+PATCH http://localhost:3001/api/persons/<id>
+Content-Type: application/json
+
+{
+    "number": "12345"
+}
+
+### Patch one person number (id error)
+PATCH http://localhost:3001/api/persons/<id>
+Content-Type: application/json
+
+{
+    "number": "12345"
+}
+
