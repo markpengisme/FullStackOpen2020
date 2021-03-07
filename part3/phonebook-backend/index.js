@@ -20,7 +20,8 @@ const errorHandler = (error, req, res, next) => {
     return res.status(400).send({ error: 'malformatted id' })
   }
 
-  next(error)
+  // next(error)
+  res.status(500).end()
 }
 
 
@@ -39,12 +40,12 @@ app.use(morgan(function (tokens, req, res) {
   ].join(' ')
 }))
 
-app.get('/info', (req, res) => {
+app.get('/info', (req, res, next) => {
   Person.find({}).then(persons => {
     let text = `<p>Phonebook has info for ${persons.length} people</p>`
     text += `<p>${Date().toString()}</p>`
     res.send(text)
-  })
+  }).catch(error => next(error))
 })
 
 app.get('/api/persons', (req, res, next) => {
