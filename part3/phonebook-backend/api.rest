@@ -2,13 +2,13 @@
 GET http://localhost:3001/api/persons
 
 ### GET one person(exists)
-GET http://localhost:3001/api/persons/603fcf271dbc848c96ef9797
+GET http://localhost:3001/api/persons/<id>
 
 ### GET one person(not exist)
 GET http://localhost:3001/api/persons/0
 
 ### DELETE one person
-DELETE http://localhost:3001/api/persons/1
+DELETE http://localhost:3001/api/persons/<id>
 
 ### POST one person
 POST http://localhost:3001/api/persons
