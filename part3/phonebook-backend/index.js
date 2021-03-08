@@ -2,6 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
+
 const Person = require('./models/person')
 
 const app = express()
@@ -14,12 +15,15 @@ const unknownEndpoint = (req, res) => {
 }
 
 const errorHandler = (error, req, res, next) => {
-  console.error(error.message)
-
+  
   if (error.name === 'CastError' && error.kind === 'ObjectId') {
     return res.status(400).send({ error: 'malformatted id' })
+  } else if (error.errors &&
+             error.errors.name &&
+             error.errors.name.name === 'ValidatorError') {
+    return res.status(400).send({ error: error.errors.name.message })
   }
-
+  
   // next(error)
   res.status(500).end()
 }
@@ -80,22 +84,16 @@ app.post('/api/persons', (req, res, next) => {
       error: 'Name and number must be filled in.' 
     })
   }
-  
-  Person.findOne({"name":body.name}).then(person => {
-    if (person) {
-        return res.status(400).json({ 
-          error: 'Name must be unique.' 
-      })
-    } else {
-      const newPerson = new Person({
-        name: body.name,
-        number: body.number,
-      })
-      newPerson.save().then(savePerson => {
-        res.json(savePerson)
-      }).catch(error => next(error))
-    } 
+
+  const newPerson = new Person({
+    name: body.name,
+    number: body.number,
   })
+
+  newPerson.save().then(savePerson => {
+    res.json(savePerson)
+  }).catch(error => next(error))
+
 })
 
 app.patch('/api/persons/:id', (req, res, next) => {
