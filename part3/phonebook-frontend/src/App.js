@@ -45,8 +45,12 @@ const App = () => {
           : returnedPerson))
         })
         .catch(error => {
-          showMessage(`'${found.name}' was already removed from server`, 'red')
-          setPersons(persons.filter(p => p.id !== found.id))
+          if (error.response.data.error){
+            showMessage(error.response.data.error, 'red')
+          } else {
+            showMessage(`'${found.name}' was already removed from server`, 'red')
+            setPersons(persons.filter(p => p.id !== found.id))
+          }
         })
       }
     } else {
@@ -57,6 +61,9 @@ const App = () => {
         setPersons(persons.concat(returnedPerson))
         setNewName('')
         setNewNumber('')
+      })
+      .catch(error => {
+        showMessage(error.response.data.error, 'red')
       })
     }
   }

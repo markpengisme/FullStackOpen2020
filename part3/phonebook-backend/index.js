@@ -15,13 +15,13 @@ const unknownEndpoint = (req, res) => {
 }
 
 const errorHandler = (error, req, res, next) => {
-  
+  console.log(error)
+  console.log(JSON.parse(JSON.stringify(error)))
+
   if (error.name === 'CastError' && error.kind === 'ObjectId') {
     return res.status(400).send({ error: 'malformatted id' })
-  } else if (error.errors &&
-             error.errors.name &&
-             error.errors.name.name === 'ValidatorError') {
-    return res.status(400).send({ error: error.errors.name.message })
+  } else if (error.errors) {
+    return res.status(400).send({ error: error.message })
   }
   
   // next(error)
@@ -102,8 +102,8 @@ app.patch('/api/persons/:id', (req, res, next) => {
   const person = {
     number: body.number,
   }
-
-  Person.findByIdAndUpdate(req.params.id, person, { new: true })
+  const opts = { new: true, runValidators: true };
+  Person.findByIdAndUpdate(req.params.id, person, opts)
     .then(updatedPerson => {
       res.json(updatedPerson)
     })

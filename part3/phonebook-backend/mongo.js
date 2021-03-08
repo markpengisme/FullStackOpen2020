@@ -1,16 +1,7 @@
 require('dotenv').config()
 const mongoose = require('mongoose')
 
-if ( process.argv.length<3 ) {
-    console.log('Please provide the password as an argument: node mongo.js <password>')
-    process.exit(1)
-} 
-
-const DB_PASSWORD = process.argv[2]
-const url = process.env["DB_PREFIX"] +
-            process.env["DB_USER"] +
-            DB_PASSWORD +
-            process.env["DB_CLUSTER"]
+const url = process.env.MONGODB_URI
 
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
 const phonebookSchema = new mongoose.Schema({

@@ -14,11 +14,13 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useFind
 const phonebookSchema = new mongoose.Schema({
     name: {
       type: String,
+      minlength: 3,
       required: true,
       unique: true
     },
     number: {
       type: String,
+      minlength: 8,
       required: true,
     }
 })
