@@ -23,7 +23,7 @@ const errorHandler = (error, req, res, next) => {
   } else if (error.errors) {
     return res.status(400).send({ error: error.message })
   }
-  
+
   // next(error)
   res.status(500).end()
 }
@@ -71,7 +71,7 @@ app.get('/api/persons/:id', (req, res, next) => {
 
 app.delete('/api/persons/:id', (req, res, next) => {
   Person.findByIdAndRemove(req.params.id)
-    .then(result => {
+    .then((result) => {
       res.status(204).end()
     }).catch(error => next(error))
 })
@@ -80,8 +80,8 @@ app.post('/api/persons', (req, res, next) => {
   const body = req.body
 
   if (!body.name || !body.number) {
-    return res.status(400).json({ 
-      error: 'Name and number must be filled in.' 
+    return res.status(400).json({
+      error: 'Name and number must be filled in.'
     })
   }
 
@@ -102,7 +102,7 @@ app.patch('/api/persons/:id', (req, res, next) => {
   const person = {
     number: body.number,
   }
-  const opts = { new: true, runValidators: true };
+  const opts = { new: true, runValidators: true }
   Person.findByIdAndUpdate(req.params.id, person, opts)
     .then(updatedPerson => {
       res.json(updatedPerson)
