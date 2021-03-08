@@ -1,9 +1,10 @@
+### get all notes
 GET http://localhost:3001/api/notes
 
-###
+### get a note
 GET http://localhost:3001/api/notes/6040015fbb0538a49b06f690
 
-###
+### post a note
 POST http://localhost:3001/api/notes
 Content-Type: application/json
 
@@ -12,7 +13,7 @@ Content-Type: application/json
     "important": false
 }
 
-###
+### content missing
 POST http://localhost:3001/api/notes
 Content-Type: application/json
 
@@ -21,10 +22,10 @@ Content-Type: application/json
     "important": true
 }
 
-###
+### delete a note
 DELETE http://localhost:3001/api/notes/6040015fbb0538a49b06f690
 
-###
+### put a note
 PUT http://localhost:3001/api/notes/6040015fbb0538a49b06f690
 Content-Type: application/json
 
@@ -33,5 +34,5 @@ Content-Type: application/json
     "important": true
 }
 
-###
+### get a unknownEndpoint
 GET http://localhost:3001/unknownEndpointTest

@@ -21,8 +21,9 @@ const errorHandler = (error, req, res, next) => {
 
   if (error.name === 'CastError' && error.kind === 'ObjectId') {
     return res.status(400).send({ error: 'malformatted id' })
-  } 
-
+  } else if (error.name === 'ValidationError') {
+    return res.status(400).json({ error: error.message })
+  }
   next(error)
 }
 
@@ -49,10 +50,10 @@ app.get('/api/notes/:id', (req, res, next) => {
     .catch(error => next(error))
 })
 
-app.post('/api/notes', (request, response) => {
+app.post('/api/notes', (request, response, next) => {
   const body = request.body
 
-  if (body.content === undefined || body.content === "") {
+  if (body.content === undefined) {
     return response.status(400).json({ error: 'content missing' })
   }
 
@@ -62,15 +63,18 @@ app.post('/api/notes', (request, response) => {
     important: body.important || false,
   })
 
-  note.save().then(savedNote => {
-    response.json(savedNote)
-  })
+  note.save()
+    .then(savedNote => savedNote.toJSON())
+    .then(savedAndFormattedNote => {
+      response.json(savedAndFormattedNote)
+    })
+    .catch(error => next(error))
 })
 
 
 app.delete('/api/notes/:id', (req, res, next) => {
   Note.findByIdAndRemove(req.params.id)
-    .then(result => {
+    .then(() => {
       res.status(204).end()
     })
     .catch(error => next(error))
@@ -91,6 +95,7 @@ app.put('/api/notes/:id', (req, res, next) => {
     .catch(error => next(error))
 })
 
+console.log('123')
 app.use(unknownEndpoint)
 app.use(errorHandler)
 
