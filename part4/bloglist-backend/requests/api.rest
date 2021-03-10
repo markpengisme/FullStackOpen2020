@@ -11,3 +11,6 @@ Content-Type: application/json
     "url": "http://example.com",
     "likes": 87
 }
+
+### get a unknownEndpoint
+GET http://localhost:3003/unknownEndpointTest
