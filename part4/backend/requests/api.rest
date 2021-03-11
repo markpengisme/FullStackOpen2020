@@ -1,0 +1,38 @@
+### get all notes
+GET http://localhost:3001/api/notes
+
+### get a note
+GET http://localhost:3001/api/notes/{id}
+
+### post a note
+POST http://localhost:3001/api/notes
+Content-Type: application/json
+
+{
+    "content": "REST client request",
+    "important": false
+}
+
+### content missing
+POST http://localhost:3001/api/notes
+Content-Type: application/json
+
+{
+    "content": "",
+    "important": true
+}
+
+### delete a note
+DELETE http://localhost:3001/api/notes/{id}
+
+### put a note
+PUT http://localhost:3001/api/notes/{id}
+Content-Type: application/json
+
+{
+    "content": "REST client request...",
+    "important": true
+}
+
+### get a unknownEndpoint
+GET http://localhost:3001/unknownEndpointTest
