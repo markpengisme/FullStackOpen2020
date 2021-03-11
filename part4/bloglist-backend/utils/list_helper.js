@@ -52,9 +52,34 @@ const mostBlogs = (blogs) => {
   return _.maxBy(reducedBlogs, function(b) { return b.blogs })
 }
 
+const mostLikes = (blogs) => {
+  if (blogs.length === 0) { return {} }
+  const mapBlogs = _.map(blogs, (blog) => {
+    return {
+      author: blog.author,
+      likes: blog.likes
+    }
+  })
+
+  const reducedBlogs = _.reduce(mapBlogs, (result, blog) => {
+    const index = _.findIndex(result, (b) => {
+      return b.author === blog.author
+    })
+
+    if (index === -1) {
+      return _.concat(result, blog)
+    } else {
+      result[index].likes += blog.likes
+      return result
+    }
+  }, {})
+  return _.maxBy(reducedBlogs, function(b) { return b.likes })
+}
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
-  mostBlogs
+  mostBlogs,
+  mostLikes
 }
