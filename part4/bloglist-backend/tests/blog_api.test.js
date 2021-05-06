@@ -29,7 +29,29 @@ describe('Test GET', () => {
 
     test('all blogs have id property', async () => {
         const response = await api.get('/api/blogs')
-        response.body.map(blog => expect(blog.id).toBeDefined())
+        response.body.map((blog) => expect(blog.id).toBeDefined())
+    })
+})
+
+describe('Test POST', () => {
+    test('succeeds with valid data', async () => {
+        const newBlog = {
+            title: 'Google.com',
+            author: 'doodle',
+            url: 'google.com',
+            likes: 10101,
+        }
+        await api
+            .post('/api/blogs')
+            .send(newBlog)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+
+        const blogsAtEnd = await helper.blogsInDb()
+        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
+
+        const titles = blogsAtEnd.map(b => b.title)
+        expect(titles).toContain('Google.com')
     })
 })
 
