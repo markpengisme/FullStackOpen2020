@@ -41,6 +41,7 @@ describe('Test POST', () => {
             url: 'google.com',
             likes: 10101,
         }
+
         await api
             .post('/api/blogs')
             .send(newBlog)
@@ -52,6 +53,26 @@ describe('Test POST', () => {
 
         const titles = blogsAtEnd.map(b => b.title)
         expect(titles).toContain('Google.com')
+    })
+
+    test('succeeds with missing "likes" field', async () => {
+        const newBlog = {
+            title: 'Google.com',
+            author: 'doodle',
+            url: 'google.com'
+        }
+
+        await api
+            .post('/api/blogs')
+            .send(newBlog)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+
+        const blogsAtEnd = await helper.blogsInDb()
+        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
+
+        const blog = blogsAtEnd.find(b => b.title === 'Google.com')
+        expect(blog.likes).toEqual(0)
     })
 })
 
