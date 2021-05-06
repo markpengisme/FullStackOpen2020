@@ -26,6 +26,11 @@ describe('Test GET', () => {
 
         expect(response.body).toHaveLength(helper.initialBlogs.length)
     })
+
+    test('all blogs have id property', async () => {
+        const response = await api.get('/api/blogs')
+        response.body.map(blog => expect(blog.id).toBeDefined())
+    })
 })
 
 afterAll(() => {
