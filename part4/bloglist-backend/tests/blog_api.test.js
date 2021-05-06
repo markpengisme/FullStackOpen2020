@@ -51,7 +51,7 @@ describe('Test POST', () => {
         const blogsAtEnd = await helper.blogsInDb()
         expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
 
-        const titles = blogsAtEnd.map(b => b.title)
+        const titles = blogsAtEnd.map((b) => b.title)
         expect(titles).toContain('Google.com')
     })
 
@@ -59,7 +59,7 @@ describe('Test POST', () => {
         const newBlog = {
             title: 'Google.com',
             author: 'doodle',
-            url: 'google.com'
+            url: 'google.com',
         }
 
         await api
@@ -71,8 +71,21 @@ describe('Test POST', () => {
         const blogsAtEnd = await helper.blogsInDb()
         expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
 
-        const blog = blogsAtEnd.find(b => b.title === 'Google.com')
+        const blog = blogsAtEnd.find((b) => b.title === 'Google.com')
         expect(blog.likes).toEqual(0)
+    })
+
+    test('fails with status code 400 if data invaild', async () => {
+        const newBlog = {
+            author: 'doodle',
+            url: 'google.com',
+            likes: 999,
+        }
+
+        const a = await api.post('/api/blogs').send(newBlog).expect(400)
+
+        const blogsAtEnd = await helper.blogsInDb()
+        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
     })
 })
 
