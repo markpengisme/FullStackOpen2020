@@ -89,6 +89,29 @@ describe('Test POST', () => {
     })
 })
 
+describe('Test DELETE', () => {
+    test('succeeds with status code 204 if id is valid', async () => {
+        const blogsAtStart = await helper.blogsInDb()
+        const blogToDelete = blogsAtStart[0]
+
+        await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204)
+
+        const blogsAtEnd = await helper.blogsInDb()
+
+        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1)
+
+        const title = blogsAtEnd.map(b => b.title)
+
+        expect(title).not.toContain(blogToDelete.title)
+    })
+
+    test('fails with statuscode 400 id is invalid', async () => {
+        const invalidId = '123456789abcdefg'
+
+        await api.delete(`/api/blogs/${invalidId}`).expect(400)
+    })
+})
+
 afterAll(() => {
     mongoose.connection.close()
 })
