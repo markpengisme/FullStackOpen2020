@@ -112,6 +112,40 @@ describe('Test DELETE', () => {
     })
 })
 
+describe('Test PATCH', () => {
+    test('succeds with status code 200 if id is valid', async () => {
+        const blogsAtStart = await helper.blogsInDb()
+        const blogToUpdate = blogsAtStart[0]
+        const newLikes = {
+            likes: 99999,
+        }
+
+        await api
+            .patch(`/api/blogs/${blogToUpdate.id}`)
+            .send(newLikes)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+
+        const blogsAtEnd = await helper.blogsInDb()
+        const blog = blogsAtEnd.find(b => b.id === blogToUpdate.id)
+
+        expect(blog.likes).toEqual(newLikes.likes)
+    })
+
+    test('fails with statuscode 400 id is invalid', async () => {
+        const invalidId = '123456789abcdefg'
+        const newLikes = {
+            likes: 99999,
+        }
+
+        await api
+            .patch(`/api/blogs/${invalidId}`)
+            .send(newLikes)
+            .expect(400)
+            .expect('Content-Type', /application\/json/)
+    })
+})
+
 afterAll(() => {
     mongoose.connection.close()
 })
