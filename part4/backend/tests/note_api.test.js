@@ -8,7 +8,6 @@ const Note = require('../models/note')
 
 beforeEach(async () => {
   await Note.deleteMany({})
-
   const noteObjects = helper.initialNotes
     .map(note => new Note(note))
   const promiseArray = noteObjects.map(note => note.save())
@@ -75,6 +74,9 @@ describe('viewing a specific note', () => {
 
 describe('addition of a new note', () => {
   test('succeeds with valid data', async () => {
+    const user = await helper.setUser()
+    const token = await helper.getToken(user)
+
     const newNote = {
       content: 'async/await simplifies making async calls',
       important: true,
@@ -82,6 +84,7 @@ describe('addition of a new note', () => {
 
     await api
       .post('/api/notes')
+      .set('Authorization','bearer ' + token)
       .send(newNote)
       .expect(200)
       .expect('Content-Type', /application\/json/)
@@ -97,12 +100,16 @@ describe('addition of a new note', () => {
   })
 
   test('fails with status code 400 if data invaild', async () => {
+    const user = await helper.setUser()
+    const token = await helper.getToken(user)
+
     const newNote = {
       important: true
     }
 
     await api
       .post('/api/notes')
+      .set('Authorization','bearer ' + token)
       .send(newNote)
       .expect(400)
 
