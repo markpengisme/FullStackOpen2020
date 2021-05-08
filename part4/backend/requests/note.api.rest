@@ -10,7 +10,8 @@ Content-Type: application/json
 
 {
     "content": "REST client request",
-    "important": false
+    "important": false,
+    "userId": "60965b930426eb339b444736"
 }
 
 ### content missing
