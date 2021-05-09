@@ -74,7 +74,7 @@ describe('viewing a specific note', () => {
 
 describe('addition of a new note', () => {
   test('succeeds with valid data', async () => {
-    const user = await helper.setUser()
+    const user = await helper.setUser(helper.testUser)
     const token = await helper.getToken(user)
 
     const newNote = {
@@ -100,7 +100,7 @@ describe('addition of a new note', () => {
   })
 
   test('fails with status code 400 if data invaild', async () => {
-    const user = await helper.setUser()
+    const user = await helper.setUser(helper.testUser)
     const token = await helper.getToken(user)
 
     const newNote = {

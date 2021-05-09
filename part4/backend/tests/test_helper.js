@@ -22,7 +22,7 @@ const testUser = {
   'password': 'markpeng'
 }
 
-const setUser = async () => {
+const setUser = async (testUser) => {
   await User.deleteMany({})
   const passwordHash = await bcrypt.hash(testUser.password, 10)
   const user = new User({
@@ -65,6 +65,7 @@ const usersInDb = async () => {
   const users = await User.find({})
   return users.map(u => u.toJSON())
 }
+
 module.exports = {
   initialNotes,
   testUser,
