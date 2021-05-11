@@ -6,6 +6,10 @@ const api = supertest(app)
 
 const Blog = require('../models/blog')
 
+beforeAll(async () => {
+    await helper.setUser(helper.testUser)
+})
+
 beforeEach(async () => {
     await Blog.deleteMany({})
     const blogObjects = helper.initialBlogs.map((blog) => new Blog(blog))

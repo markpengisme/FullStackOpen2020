@@ -7,10 +7,11 @@ const api = supertest(app)
 
 const User = require('../models/user')
 
+beforeAll(async () => {
+    await helper.setUser(helper.testUser)
+})
+
 describe('when there is initially one user in db', () => {
-    beforeEach(async () => {
-        await helper.setUser(helper.testUser)
-    })
 
     test('creation succeeds with a fresh username', async () => {
         const usersAtStart = await helper.usersInDb()

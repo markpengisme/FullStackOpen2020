@@ -4,13 +4,12 @@ const User = require('../models/user')
 
 
 userRouter.get('/', async (request, response) => {
-    const users = await User.find({})
+    const users = await User.find({}).populate('blogs')
     response.json(users)
 })
 
 userRouter.post('/', async (request, response) => {
     const body = request.body
-
 
     if (!body.password || body.password.length < 3) {
         let e = Error('Password length is less than 3')
