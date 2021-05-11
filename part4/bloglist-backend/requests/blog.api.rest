@@ -4,6 +4,7 @@ GET http://localhost:3001/api/blogs
 ### post a blog
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlN1cGVydXNlciIsImlkIjoiNjA5OWYxODlkMjRhZTRkN2JkODMwYzYxIiwiaWF0IjoxNjIwNzE1MDAzLCJleHAiOjE2MjA3MTg2MDN9.o78aibHW19ZREhupa6ChFKzKhwU6RY5S1lh_BwOouF0
 
 {
     "title": "Example Domain",
