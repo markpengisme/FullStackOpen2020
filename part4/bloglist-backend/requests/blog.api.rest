@@ -15,8 +15,8 @@ Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlN1c
 
 
 ### delete a blog
-DELETE  http://localhost:3001/api/blogs/<id>
-
+DELETE  http://localhost:3001/api/blogs/609a268be6dae2f03b38223a
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlN1cGVydXNlciIsImlkIjoiNjA5OWYxODlkMjRhZTRkN2JkODMwYzYxIiwiaWF0IjoxNjIwNzI4MzI5LCJleHAiOjE2MjA3MzE5Mjl9.DM4iBlpZAmcTRZEs-REK5UHu-QWJRwTA4JNoQAjcW-8
 
 ### patch a blog
 PATCH   http://localhost:3001/api/blogs/<id>

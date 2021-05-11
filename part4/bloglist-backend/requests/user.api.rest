@@ -10,3 +10,14 @@ Content-Type: application/json
     "name": "Superuser",
     "password": "markpeng"
 }
+
+
+### post a user
+POST http://localhost:3001/api/users
+Content-Type: application/json
+
+{
+    "username": "test",
+    "name": "123",
+    "password": "test123"
+}
