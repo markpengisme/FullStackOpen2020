@@ -8,6 +8,7 @@ const api = supertest(app)
 const User = require('../models/user')
 
 beforeAll(async () => {
+    await User.deleteMany({})
     await helper.setUser(helper.testUser)
 })
 

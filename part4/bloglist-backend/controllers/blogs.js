@@ -33,24 +33,39 @@ blogsRouter.delete('/:id', userExtractor, async (request, response) => {
     const blog = await Blog.findOne({ _id: request.params.id })
 
     if (!blog){
-        return response.status(404).json({ error: 'Blog not found' })
-    }
-    if (user._id.toString() !== blog.user.toString()){
-        return response.status(403).json({ error: 'No permission to operate' })
+        let e = Error('Blog not found')
+        e.name = 'NotFound'
+        throw e
+    } else if (user._id.toString() !== blog.user.toString()){
+        let e = Error('No permission to operate')
+        e.name = 'Forbidden'
+        throw e
     }
 
     await Blog.findByIdAndRemove(request.params.id)
     response.status(204).end()
 })
 
-blogsRouter.patch('/:id', async (request, response) => {
-    const body = request.body
+blogsRouter.patch('/:id', userExtractor, async (request, response) => {
+    const user = request.user
+    const blog = await Blog.findOne({ _id: request.params.id })
 
-    const blog = {
+    if (!blog){
+        let e = Error('Blog not found')
+        e.name = 'NotFound'
+        throw e
+    } else if (user._id.toString() !== blog.user.toString()){
+        let e = Error('No permission to operate')
+        e.name = 'Forbidden'
+        throw e
+    }
+
+    const body = request.body
+    const likes = {
         likes: body.likes,
     }
     const opts = { new: true, runValidators: true }
-    const updatedPerson = await Blog.findByIdAndUpdate(request.params.id, blog, opts)
+    const updatedPerson = await Blog.findByIdAndUpdate(request.params.id, likes, opts)
     response.json(updatedPerson)
 })
 
