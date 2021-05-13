@@ -1,0 +1,40 @@
+### get all notes
+GET http://localhost:3001/api/notes
+
+### get a note
+GET http://localhost:3001/api/notes/{id}
+
+### post a note
+POST http://localhost:3001/api/notes
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjYwOTY1YjkzMDQyNmViMzM5YjQ0NDczNiIsImlhdCI6MTYyMDUxMjg2Mn0.1Zz03xsYLs6CpVYyPTXIkv3t_oHT5hvNdtturVWYB68
+
+{
+    "content": "REST client request",
+    "important": false,
+    "userId": "60965b930426eb339b444736"
+}
+
+### content missing
+POST http://localhost:3001/api/notes
+Content-Type: application/json
+
+{
+    "content": "",
+    "important": true
+}
+
+### delete a note
+DELETE http://localhost:3001/api/notes/{id}
+
+### put a note
+PUT http://localhost:3001/api/notes/{id}
+Content-Type: application/json
+
+{
+    "content": "REST client request...",
+    "important": true
+}
+
+### get a unknownEndpoint
+GET http://localhost:3001/unknownEndpointTest
