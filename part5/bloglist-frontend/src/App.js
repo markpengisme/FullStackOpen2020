@@ -5,6 +5,7 @@ import loginService from './services/login'
 
 const App = () => {
     const [blogs, setBlogs] = useState([])
+    const [newBlog, setNewBlog] = useState({})
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [user, setUser] = useState(null)
@@ -13,17 +14,71 @@ const App = () => {
         <form onSubmit={handleLogin}>
             <div>
                 <label>username</label>
-                <input type="text" value={username} name="Username" 
-                    onChange={({target}) => setUsername(target.value)}
+                <input
+                    type="text"
+                    value={username}
+                    name="Username"
+                    onChange={({ target }) => setUsername(target.value)}
                 />
             </div>
             <div>
                 <label>password</label>
-                <input type="password" value={password} name="Password"
-                    onChange={({target}) => setPassword(target.value)}
+                <input
+                    type="password"
+                    value={password}
+                    name="Password"
+                    onChange={({ target }) => setPassword(target.value)}
                 />
             </div>
             <button type="submit">login</button>
+        </form>
+    )
+
+    const blogForm = () => (
+        <form onSubmit={createBlog}>
+            <div>
+                <label>title</label>
+                <input
+                    type="text"
+                    value={newBlog.title}
+                    name="Title"
+                    onChange={({ target }) =>
+                        setNewBlog({
+                            ...newBlog,
+                            title: target.value,
+                        })
+                    }
+                />
+            </div>
+            <div>
+                <label>author</label>
+                <input
+                    type="text"
+                    value={newBlog.author}
+                    name="Author"
+                    onChange={({ target }) =>
+                        setNewBlog({
+                            ...newBlog,
+                            author: target.value,
+                        })
+                    }
+                />
+            </div>
+            <div>
+                <label>url</label>
+                <input
+                    type="text"
+                    value={newBlog.url}
+                    name="URL"
+                    onChange={({ target }) =>
+                        setNewBlog({
+                            ...newBlog,
+                            url: target.value,
+                        })
+                    }
+                />
+            </div>
+            <button type="submit">create</button>
         </form>
     )
 
@@ -40,21 +95,29 @@ const App = () => {
         }
     }, [])
 
+    const createBlog = async (event) => {
+        event.preventDefault()
+        try {
+            const blog = await blogService.create(newBlog)
+            setBlogs(blogs.concat(blog))
+            setNewBlog({})
+        } catch (exception) {}
+    }
+
     const handleLogin = async (event) => {
         event.preventDefault()
-        
+
         try {
             const user = await loginService.login({
-                username, password
+                username,
+                password,
             })
             window.localStorage.setItem('loggedUser', JSON.stringify(user))
             blogService.setToken(user.token)
             setUser(user)
             setUsername('')
             setPassword('')
-        } catch (exception) {
-           
-        }
+        } catch (exception) {}
     }
 
     const handleLogout = (event) => {
@@ -76,6 +139,7 @@ const App = () => {
             <div>
                 <h2>blogs</h2>
                 <button onClick={handleLogout}>logout</button>
+                {blogForm()}
                 {blogs.map((blog) => (
                     <Blog key={blog.id} blog={blog} />
                 ))}
