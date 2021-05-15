@@ -27,6 +27,13 @@ const App = () => {
         </Togglable>
     )
 
+    const blogsElement = () => {
+        return blogs.map((blog) => (
+            <Blog key={blog.id} blog={blog} />
+        ))
+    }
+
+
     useEffect(() => {
         blogService.getAll().then((blogs) => setBlogs(blogs))
     }, [])
@@ -97,9 +104,7 @@ const App = () => {
                 <Notification message={message} />
                 <button onClick={handleLogout}>logout</button>
                 {blogForm()}
-                {blogs.map((blog) => (
-                    <Blog key={blog.id} blog={blog} />
-                ))}
+                {blogsElement()}
             </div>
         )
     }
