@@ -4,7 +4,7 @@ const BlogForm = ({createBlog}) => {
 
     const onSubmit = (event) => {
         event.preventDefault()
-        createBlog({newBlog})
+        createBlog(newBlog)
         setNewBlog({ title: '', author: '', url: '' })
     }
     return (

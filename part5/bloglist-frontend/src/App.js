@@ -31,6 +31,7 @@ const App = () => {
                 key={blog.id}
                 blog={blog}
                 increaseBlogLikes={increaseBlogLikes}
+                removeBlog={removeBlog}
             />
         ))
     }
@@ -57,15 +58,35 @@ const App = () => {
         }, 5000)
     }
 
-    const createBlog = async ({ newBlog }) => {
+    const createBlog = async (newBlog) => {
         try {
             const blog = await blogService.create(newBlog)
             blogFormRef.current.toggleVisibility()
-            setBlogs(blogs.concat(blog))
+            setBlogs(blogs.concat(blog).sort((a, b) => b.likes - a.likes))
             showMessage(
                 `a new blog "${blog.title}" is created by ${blog.author}!`,
                 'green'
             )
+        } catch (exception) {
+            showMessage('Create error!', 'red')
+        }
+    }
+
+    const removeBlog = async (id) => {
+        try {
+            const blog = blogs.find((blog) => blog.id === id)
+            if (
+                window.confirm(
+                    `remove blog "${blog.title}" by ${blog.author}!`
+                )
+            ) {
+                await blogService.remove(id)
+                setBlogs(
+                    blogs
+                        .filter((blog) => blog.id !== id)
+                        .sort((a, b) => b.likes - a.likes)
+                )
+            }
         } catch (exception) {
             showMessage('Create error!', 'red')
         }
