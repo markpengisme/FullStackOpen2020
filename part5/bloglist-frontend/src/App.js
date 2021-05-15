@@ -36,7 +36,9 @@ const App = () => {
     }
 
     useEffect(() => {
-        blogService.getAll().then((blogs) => setBlogs(blogs))
+        blogService
+            .getAll()
+            .then((blogs) => setBlogs(blogs.sort((a, b) => b.likes - a.likes)))
     }, [])
 
     useEffect(() => {
@@ -69,10 +71,14 @@ const App = () => {
         }
     }
 
-    const increaseBlogLikes = async ( id, likesObject ) => {
+    const increaseBlogLikes = async (id, likesObject) => {
         try {
             const returnedBlog = await blogService.patch(id, likesObject)
-            setBlogs( blogs.map((blog) => (blog.id !== id ? blog : returnedBlog)))
+            setBlogs(
+                blogs
+                    .map((blog) => (blog.id !== id ? blog : returnedBlog))
+                    .sort((a, b) => b.likes - a.likes)
+            )
         } catch (exception) {
             showMessage('increase likes error!', 'red')
         }
