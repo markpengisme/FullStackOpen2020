@@ -9,22 +9,13 @@ import Togglable from './components/Togglable'
 
 const App = () => {
     const [blogs, setBlogs] = useState([])
-    const [newBlog, setNewBlog] = useState({ title: '', author: '', url: '' })
     const [message, setMessage] = useState({})
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
     const [user, setUser] = useState(null)
     const blogFormRef = useRef()
 
     const loginForm = () => (
         <Togglable buttonLabel="login">
-            <LoginForm
-                handleLogin={handleLogin}
-                username={username}
-                setUsername={setUsername}
-                password={password}
-                setPassword={setPassword}
-            />
+            <LoginForm handleLogin={handleLogin} />
         </Togglable>
     )
 
@@ -32,8 +23,6 @@ const App = () => {
         <Togglable buttonLabel="new note" ref={blogFormRef}>
             <BlogForm
                 createBlog={createBlog}
-                newBlog={newBlog}
-                setNewBlog={setNewBlog}
             />
         </Togglable>
     )
@@ -58,13 +47,11 @@ const App = () => {
         }, 5000)
     }
 
-    const createBlog = async (event) => {
-        event.preventDefault()
+    const createBlog = async ({newBlog}) => {
         try {
             const blog = await blogService.create(newBlog)
             blogFormRef.current.toggleVisibility()
             setBlogs(blogs.concat(blog))
-            setNewBlog({ title: '', author: '', url: '' })
             showMessage(
                 `a new blog "${blog.title}" is created by ${blog.author}!`,
                 'green'
@@ -74,9 +61,7 @@ const App = () => {
         }
     }
 
-    const handleLogin = async (event) => {
-        event.preventDefault()
-
+    const handleLogin = async ({ username, password }) => {
         try {
             const user = await loginService.login({
                 username,
@@ -85,8 +70,6 @@ const App = () => {
             window.localStorage.setItem('loggedUser', JSON.stringify(user))
             blogService.setToken(user.token)
             setUser(user)
-            setUsername('')
-            setPassword('')
         } catch (exception) {
             showMessage('Wrong credentials!', 'red')
         }
