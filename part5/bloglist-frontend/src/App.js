@@ -21,18 +21,19 @@ const App = () => {
 
     const blogForm = () => (
         <Togglable buttonLabel="new note" ref={blogFormRef}>
-            <BlogForm
-                createBlog={createBlog}
-            />
+            <BlogForm createBlog={createBlog} />
         </Togglable>
     )
 
     const blogsElement = () => {
         return blogs.map((blog) => (
-            <Blog key={blog.id} blog={blog} />
+            <Blog
+                key={blog.id}
+                blog={blog}
+                increaseBlogLikes={increaseBlogLikes}
+            />
         ))
     }
-
 
     useEffect(() => {
         blogService.getAll().then((blogs) => setBlogs(blogs))
@@ -54,7 +55,7 @@ const App = () => {
         }, 5000)
     }
 
-    const createBlog = async ({newBlog}) => {
+    const createBlog = async ({ newBlog }) => {
         try {
             const blog = await blogService.create(newBlog)
             blogFormRef.current.toggleVisibility()
@@ -65,6 +66,15 @@ const App = () => {
             )
         } catch (exception) {
             showMessage('Create error!', 'red')
+        }
+    }
+
+    const increaseBlogLikes = async ( id, likesObject ) => {
+        try {
+            const returnedBlog = await blogService.patch(id, likesObject)
+            setBlogs( blogs.map((blog) => (blog.id !== id ? blog : returnedBlog)))
+        } catch (exception) {
+            showMessage('increase likes error!', 'red')
         }
     }
 

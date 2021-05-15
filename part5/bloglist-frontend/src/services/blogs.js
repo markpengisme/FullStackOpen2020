@@ -20,4 +20,12 @@ const create = newObject => {
   return request.then(response => response.data)
 }
 
-export default { setToken, getAll, create }
+const patch = (id, newObject) => {
+  const config = {
+    headers: { Authorization: token },
+  }
+  const request = axios.patch(`${baseUrl}/${id}`, newObject, config)
+  return request.then(response => response.data)
+}
+
+export default { setToken, getAll, create, patch}
