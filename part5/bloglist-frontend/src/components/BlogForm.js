@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-const BlogForm = ({createBlog}) => {
+const BlogForm = ({ createBlog }) => {
     const [newBlog, setNewBlog] = useState({ title: '', author: '', url: '' })
 
     const onSubmit = (event) => {
