@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 const Blog = ({ blog, increaseBlogLikes, removeBlog }) => {
-    const [visible, setVisible] = useState(true)
+    const [visible, setVisible] = useState(false)
     const hideWhenVisible = { display: visible ? 'none' : '' }
     const showWhenVisible = { display: visible ? '' : 'none' }
 
@@ -24,13 +24,13 @@ const Blog = ({ blog, increaseBlogLikes, removeBlog }) => {
 
     return (
         <div>
-            <div style={hideWhenVisible}>
+            <div style={hideWhenVisible} className="brief-blog">
                 <div style={blogStyle}>
                     {blog.title}
                     <button onClick={toggleVisibility}>view</button>
                 </div>
             </div>
-            <div style={showWhenVisible}>
+            <div style={showWhenVisible} className="detail-blog">
                 <div style={blogStyle}>
                     {blog.title}
                     <br></br>

@@ -26,6 +26,7 @@ const App = () => {
     )
 
     const blogsElement = () => {
+        console.log(blogs)
         return blogs.map((blog) => (
             <Blog
                 key={blog.id}
