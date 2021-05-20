@@ -47,3 +47,24 @@ test('clicking the view button calls show details', () => {
     expect(detail).toHaveTextContent(blog.url)
     expect(detail).toHaveTextContent(blog.likes)
 })
+
+test('clicking the like button calls event handler twice', () => {
+    const blog = {
+        title: 'Example.com',
+        author: 'Mark',
+        url: 'example.com',
+        likes: 87,
+    }
+
+    const mockHandler = jest.fn()
+    const component = render(<Blog blog={blog} increaseBlogLikes={mockHandler} />)
+
+    const view = component.getByText('view')
+    fireEvent.click(view)
+
+    const like = component.getByText('like')
+    fireEvent.click(like)
+    fireEvent.click(like)
+    expect(mockHandler.mock.calls).toHaveLength(2)
+})
+
