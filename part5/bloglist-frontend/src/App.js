@@ -139,6 +139,7 @@ const App = () => {
         return (
             <div>
                 <h2>blogs</h2>
+                <p>{user.name} logged-in</p>
                 <Notification message={message} />
                 <button onClick={handleLogout}>logout</button>
                 {blogForm()}

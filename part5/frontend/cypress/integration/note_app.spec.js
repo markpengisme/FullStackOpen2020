@@ -20,7 +20,6 @@ describe('Note app', function () {
         cy.get('#username').type('root')
         cy.get('#password').type('markpeng')
         cy.get('#login-button').click()
-
         cy.contains('Superuser logged-in')
     })
 
@@ -35,7 +34,7 @@ describe('Note app', function () {
             .and('have.css', 'color', 'rgb(255, 0, 0)')
             .and('have.css', 'border-style', 'solid')
 
-        cy.get('html').should('not.contain', 'Superuser logged in')
+        cy.get('html').should('not.contain', 'Superuser logged-in')
     })
 
     describe('when logged in', function () {
