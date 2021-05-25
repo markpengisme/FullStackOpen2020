@@ -44,4 +44,23 @@ describe('Blog app', function () {
             cy.get('html').should('not.contain', 'Superuser logged-in')
         })
     })
+
+    describe('When logged in', function () {
+        beforeEach(function () {
+            cy.login({ username: 'root', password: 'markpeng' })
+        })
+
+        it('A blog can be created', function () {
+            cy.contains('new blog').click()
+            cy.get('#title').type('Example.com')
+            cy.get('#author').type('Mark')
+            cy.get('#url').type('url')
+            cy.contains('create').click()
+            cy.get('.message')
+                .should('contain', 'a new blog')
+                .and('have.css', 'color', 'rgb(0, 128, 0)')
+                .and('have.css', 'border-style', 'solid')
+            cy.contains('Example.com')
+        })
+    })
 })
