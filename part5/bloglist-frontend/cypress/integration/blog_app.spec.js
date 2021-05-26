@@ -62,5 +62,34 @@ describe('Blog app', function () {
                 .and('have.css', 'border-style', 'solid')
             cy.contains('Example.com')
         })
+
+        describe('and blogs exists', function () {
+            beforeEach(function () {
+                cy.createBlog({
+                    title: 'Example Domain',
+                    author: 'example',
+                    url: 'http://example.com',
+                    likes: 87,
+                })
+                cy.createBlog({
+                    title: 'Test123',
+                    author: 'test',
+                    url: 'http://test.com',
+                    likes: 123,
+                })
+                cy.createBlog({
+                    title: 'Google',
+                    author: 'Doogle',
+                    url: 'http://google.com'
+                })
+            })
+
+            it.only('one of those can be clicked like', function () {
+                cy.contains('Test123').parent().parent().as('blog')
+                cy.get('@blog').contains('view').click()
+                cy.get('@blog').contains('like').click()
+                cy.get('@blog').find('.likes').should('include.text', '124')
+            })
+        })
     })
 })

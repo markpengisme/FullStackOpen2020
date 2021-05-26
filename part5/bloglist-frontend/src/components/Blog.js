@@ -36,12 +36,14 @@ const Blog = ({ blog, increaseBlogLikes, removeBlog }) => {
                     <br></br>
                     {blog.url}
                     <br></br>
-                    likes: {blog.likes}
-                    <button
-                        onClick={() => likesBtnOnClick(blog.id, blog.likes)}
-                    >
-                        like
-                    </button>
+                    <span className="likes">
+                        likes: {blog.likes}
+                        <button
+                            onClick={() => likesBtnOnClick(blog.id, blog.likes)}
+                        >
+                            like
+                        </button>
+                    </span>
                     <br></br>
                     {blog.author}
                     <br></br>
