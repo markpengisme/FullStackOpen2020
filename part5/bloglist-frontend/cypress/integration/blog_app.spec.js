@@ -84,11 +84,18 @@ describe('Blog app', function () {
                 })
             })
 
-            it.only('one of those can be clicked like', function () {
+            it('one of those can be clicked like', function () {
                 cy.contains('Test123').parent().parent().as('blog')
                 cy.get('@blog').contains('view').click()
                 cy.get('@blog').contains('like').click()
                 cy.get('@blog').find('.likes').should('include.text', '124')
+            })
+
+            it.only('one of those can be delete', function () {
+                cy.contains('Test123').parent().parent().as('blog')
+                cy.get('@blog').contains('view').click()
+                cy.get('@blog').contains('remove').click()
+                cy.contains('Test123').should('not.exist')
             })
         })
     })
