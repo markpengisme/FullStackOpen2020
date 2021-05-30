@@ -91,11 +91,11 @@ describe('Blog app', function () {
                 cy.get('@blog').find('.likes').should('include.text', '124')
             })
 
-            it('one of those can be delete', function () {
+            it.only('one of those can be delete', function () {
                 cy.contains('Test123').parent().parent().as('blog')
                 cy.get('@blog').contains('view').click()
                 cy.get('@blog').contains('remove').click()
-                cy.contains('Test123').should('not.exist')
+                cy.get('body').should('not.include.text', 'Test123')
             })
         })
     })
