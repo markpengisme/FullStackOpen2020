@@ -89,7 +89,7 @@ const App = () => {
                 )
             }
         } catch (exception) {
-            showMessage('Create error!', 'red')
+            showMessage('Remove error!', 'red')
         }
     }
 

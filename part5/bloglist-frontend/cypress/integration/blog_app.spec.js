@@ -6,7 +6,13 @@ describe('Blog app', function () {
             username: 'root',
             password: 'markpeng',
         }
+        const testUser = {
+            name: 'Testuser',
+            username: 'user',
+            password: 'marky',
+        }
         cy.request('POST', 'http://localhost:3001/api/users/', user)
+        cy.request('POST', 'http://localhost:3001/api/users/', testUser)
         cy.visit('http://localhost:3000')
     })
 
@@ -80,7 +86,7 @@ describe('Blog app', function () {
                 cy.createBlog({
                     title: 'Google',
                     author: 'Doogle',
-                    url: 'http://google.com'
+                    url: 'http://google.com',
                 })
             })
 
@@ -91,11 +97,26 @@ describe('Blog app', function () {
                 cy.get('@blog').find('.likes').should('include.text', '124')
             })
 
-            it.only('one of those can be delete', function () {
+            it('one of those can be delete', function () {
                 cy.contains('Test123').parent().parent().as('blog')
                 cy.get('@blog').contains('view').click()
                 cy.get('@blog').contains('remove').click()
                 cy.get('body').should('not.include.text', 'Test123')
+            })
+
+            it('other people can not delete', function () {
+                cy.contains('logout').click()
+                cy.contains('login').click()
+                cy.get('#username').type('user')
+                cy.get('#password').type('marky')
+                cy.get('#login-button').click()
+                cy.contains('Test123').parent().parent().as('blog')
+                cy.get('@blog').contains('view').click()
+                cy.get('@blog').contains('remove').click()
+                cy.get('.message')
+                    .should('contain', 'Remove error!')
+                    .and('have.css', 'color', 'rgb(255, 0, 0)')
+                    .and('have.css', 'border-style', 'solid')
             })
         })
     })
