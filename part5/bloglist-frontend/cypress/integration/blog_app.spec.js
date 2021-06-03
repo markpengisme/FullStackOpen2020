@@ -87,6 +87,7 @@ describe('Blog app', function () {
                     title: 'Google',
                     author: 'Doogle',
                     url: 'http://google.com',
+                    likes: 122,
                 })
             })
 
@@ -117,6 +118,27 @@ describe('Blog app', function () {
                     .should('contain', 'Remove error!')
                     .and('have.css', 'color', 'rgb(255, 0, 0)')
                     .and('have.css', 'border-style', 'solid')
+            })
+
+            it('those are sorted', function () {
+                cy.get('.detail-blog').then(blogs => {
+                    expect(blogs[0]).to.contain('Test123')
+                    const likes = blogs.toArray().map(blog => {
+                        return Number.parseInt(blog.querySelector('.likes').textContent.slice(7,-4))
+                    })
+                    let max = likes[0]
+                    for (const like of likes){
+                        expect(like).to.be.lte(max)
+                        max = like
+                    }
+                })
+                cy.contains('Google').parent().parent().as('blog')
+                cy.get('@blog').contains('view').click()
+                cy.get('@blog').contains('like').click()
+                cy.wait(1000)
+                cy.get('@blog').contains('like').click()
+                cy.wait(1000)
+                cy.get('.detail-blog').first().should('include.text', 'Google')
             })
         })
     })
